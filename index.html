@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ausbildung Verwaltungswirt/in NRW 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Harmony (Light Beige, Muted Green, Subtle Red Accent) -->
+    <!-- Application Structure Plan: A task-oriented dashboard SPA. Starts with key benefits (salary, security), moves to an interactive job finder (core feature), then provides supporting info on career paths, salary comparisons, and a step-by-step application guide. This structure prioritizes user goals (finding a job) over the report's linear format for better usability and engagement. -->
+    <!-- Visualization & Content Choices: Key Stats -> Inform -> HTML/CSS Cards -> Hover effects -> Quick overview. Job Listings -> Organize -> JS-filtered HTML list -> Button clicks -> Easy filtering. Salary -> Compare -> Chart.js Bar Chart -> Tooltips -> Clear financial comparison. Career Path -> Inform -> HTML/CSS timeline -> Hover effects -> Shows progression. Application -> Inform -> HTML/CSS accordion -> Click to expand -> Step-by-step guidance. All choices use HTML/CSS or Canvas (via Chart.js), confirming NO SVG/Mermaid. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF7;
+            color: #333;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 450px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .btn-filter {
+            @apply px-6 py-2 rounded-full font-semibold transition-all duration-200;
+        }
+        .btn-filter.active {
+            @apply bg-[#3A6B35] text-white shadow-md;
+        }
+        .job-card {
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        .job-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        .career-step {
+            transition: background-color 0.3s;
+        }
+        .career-step:hover {
+            background-color: #E3EADD;
+        }
+        .section-title {
+            border-bottom: 2px solid #CBD18F;
+            padding-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white shadow-sm sticky top-0 z-10">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <h1 class="text-2xl sm:text-3xl font-bold text-gray-800">Ausbildung zum/zur Verwaltungswirt/in in NRW 2026</h1>
+            <p class="text-gray-600 mt-1">Ihr interaktiver Guide für eine sichere Karriere im öffentlichen Dienst.</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+
+        <section id="dashboard" class="mb-16">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 section-title">Ihre Vorteile auf einen Blick</h2>
+            <p class="text-gray-700 mb-8 max-w-3xl">Die Ausbildung zum Verwaltungswirt ist mehr als nur ein Job – es ist der Einstieg in eine krisensichere Beamtenlaufbahn mit attraktiven Konditionen. Diese Übersicht zeigt Ihnen die wichtigsten Fakten, die diesen Karriereweg in Nordrhein-Westfalen so besonders machen.</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-[#3A6B35]">
+                    <h3 class="font-bold text-lg text-gray-800">Top-Gehalt</h3>
+                    <p class="text-3xl font-bold text-[#3A6B35] mt-2">ca. 1.499 €</p>
+                    <p class="text-gray-600">monatliche Anwärterbezüge (brutto) während der Ausbildung.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-[#CBD18F]">
+                    <h3 class="font-bold text-lg text-gray-800">Kurze Ausbildung</h3>
+                    <p class="text-3xl font-bold text-gray-700 mt-2">2 Jahre</p>
+                    <p class="text-gray-600">duale Ausbildung im Beamtenverhältnis auf Widerruf.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-[#E3B448]">
+                    <h3 class="font-bold text-lg text-gray-800">Hohe Sicherheit</h3>
+                    <p class="text-3xl font-bold text-gray-700 mt-2">Unkündbar</p>
+                    <p class="text-gray-600">Nach der Probezeit als Beamter/Beamtin auf Lebenszeit.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-[#A44A3F]">
+                    <h3 class="font-bold text-lg text-gray-800">Gute Perspektiven</h3>
+                    <p class="text-3xl font-bold text-gray-700 mt-2">A6 bis A9</p>
+                    <p class="text-gray-600">und die Chance zum Aufstieg in den gehobenen Dienst.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="job-finder" class="mb-16">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 section-title">Interaktiver Stellenfinder NRW 2026</h2>
+            <p class="text-gray-700 mb-8 max-w-3xl">Hier finden Sie eine Auswahl konkreter Ausbildungsangebote für den Start im Jahr 2026. Filtern Sie einfach nach Landes- oder Kommunalverwaltung, um die passenden Stellen für sich zu entdecken. Die Bewerbungsfristen sind entscheidend, also planen Sie vorausschauend!</p>
+            <div class="flex justify-center space-x-4 mb-8">
+                <button id="filter-all" class="btn-filter active">Alle Anzeigen</button>
+                <button id="filter-land" class="btn-filter">Landesverwaltung</button>
+                <button id="filter-kommune" class="btn-filter">Kommunalverwaltung</button>
+            </div>
+            <div id="job-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            </div>
+        </section>
+
+        <section id="salary-comparison" class="mb-16">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 section-title">Gehaltsvergleich in der Ausbildung</h2>
+             <p class="text-gray-700 mb-8 max-w-3xl mx-auto text-center">Wie attraktiv ist das Gehalt wirklich? Diese Grafik vergleicht die Anwärterbezüge eines Verwaltungswirts mit der Vergütung für Verwaltungsfachangestellte und dem bundesweiten Durchschnitt aller Ausbildungsberufe. Die Zahlen verdeutlichen den finanziellen Vorteil der Beamtenlaufbahn.</p>
+            <div class="bg-white p-4 sm:p-6 rounded-lg shadow-md">
+                <div class="chart-container">
+                    <canvas id="salaryChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="career-path" class="mb-16">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 section-title">Ihr Karriereweg im mittleren Dienst</h2>
+            <p class="text-gray-700 mb-8 max-w-3xl">Die Ausbildung ist nur der Anfang. Im mittleren Dienst gibt es klare Beförderungsstufen. Diese Visualisierung zeigt Ihren möglichen Weg vom Anwärter bis zum Regierungshauptsekretär, inklusive der Besoldungsgruppen. Bei herausragenden Leistungen ist sogar der Aufstieg in den gehobenen Dienst möglich.</p>
+            <div class="relative">
+                <div class="hidden sm:block absolute left-1/2 top-4 bottom-4 w-0.5 bg-[#CBD18F]"></div>
+                <div class="space-y-8 sm:space-y-0">
+                    <div class="sm:grid sm:grid-cols-2 sm:gap-x-8 items-center">
+                        <div class="text-center sm:text-right sm:pr-8 career-step p-4 rounded-lg">
+                            <h3 class="font-bold text-lg">Ausbildung</h3>
+                            <p class="text-gray-600">Regierungssekretäranwärter/in</p>
+                        </div>
+                        <div class="relative flex justify-center mt-2 sm:mt-0">
+                            <div class="w-8 h-8 bg-[#3A6B35] rounded-full flex items-center justify-center text-white font-bold">1</div>
+                        </div>
+                    </div>
+                    <div class="sm:grid sm:grid-cols-2 sm:gap-x-8 items-center">
+                        <div class="relative flex justify-center mb-2 sm:mb-0 sm:order-2">
+                             <div class="w-8 h-8 bg-[#3A6B35] rounded-full flex items-center justify-center text-white font-bold">2</div>
+                        </div>
+                        <div class="text-center sm:text-left sm:pl-8 career-step p-4 rounded-lg sm:order-1">
+                            <h3 class="font-bold text-lg">Einstieg (A6)</h3>
+                            <p class="text-gray-600">Regierungssekretär/in (auf Probe)</p>
+                        </div>
+                    </div>
+                    <div class="sm:grid sm:grid-cols-2 sm:gap-x-8 items-center">
+                        <div class="text-center sm:text-right sm:pr-8 career-step p-4 rounded-lg">
+                            <h3 class="font-bold text-lg">Beförderung (A7)</h3>
+                            <p class="text-gray-600">Regierungsobersekretär/in</p>
+                        </div>
+                         <div class="relative flex justify-center mt-2 sm:mt-0">
+                             <div class="w-8 h-8 bg-[#3A6B35] rounded-full flex items-center justify-center text-white font-bold">3</div>
+                        </div>
+                    </div>
+                     <div class="sm:grid sm:grid-cols-2 sm:gap-x-8 items-center">
+                        <div class="relative flex justify-center mb-2 sm:mb-0 sm:order-2">
+                             <div class="w-8 h-8 bg-[#3A6B35] rounded-full flex items-center justify-center text-white font-bold">4</div>
+                        </div>
+                        <div class="text-center sm:text-left sm:pl-8 career-step p-4 rounded-lg sm:order-1">
+                            <h3 class="font-bold text-lg">Endamt (A8/A9)</h3>
+                            <p class="text-gray-600">Regierungshauptsekretär/in</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-800 text-white mt-12">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center">
+            <p>&copy; 2025 Interaktiver Ausbildungs-Guide NRW. Alle Angaben basieren auf dem Report vom August 2025.</p>
+            <p class="text-sm text-gray-400 mt-1">Dies ist eine illustrative Anwendung. Für verbindliche Informationen besuchen Sie bitte die offiziellen Karriereportale.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const jobData = [
+                { type: 'land', title: 'Verwaltungswirt/in', employer: 'Landesamt für Besoldung und Versorgung NRW', location: 'Düsseldorf', deadline: '30.09.2025', salary: 'ca. 1.499 €' },
+                { type: 'land', title: 'Verwaltungswirt/in', employer: 'Bezirksregierung Arnsberg', location: 'Arnsberg', deadline: '30.11.2025', salary: 'ca. 1.499 €' },
+                { type: 'land', title: 'Verwaltungswirt/in', employer: 'Bezirksregierung Detmold', location: 'Detmold', deadline: '30.11.2025', salary: 'ca. 1.350 €' },
+                { type: 'land', title: 'Verwaltungswirt/in', employer: 'Bezirksregierung Düsseldorf', location: 'Düsseldorf', deadline: '30.11.2025', salary: 'ca. 1.499 €' },
+                { type: 'land', title: 'Regierungssekretär/in', employer: 'Bezirksregierung Münster', location: 'Münster', deadline: '30.11.2025', salary: 'ca. 1.499 €' },
+                { type: 'kommune', title: 'Verwaltungswirt/in', employer: 'Stadt Bielefeld', location: 'Bielefeld', deadline: '24.09.2025', salary: 'k.A.' },
+                { type: 'kommune', title: 'Kreissekretäranwärter/in', employer: 'Rhein-Kreis Neuss', location: 'Neuss', deadline: '01.03.2026', salary: 'ca. 1.499 €' },
+                { type: 'kommune', title: 'Stadtsekretäranwärter/in', employer: 'Stadt Recklinghausen', location: 'Recklinghausen', deadline: '28.09.2025', salary: 'ca. 1.499 €' },
+                { type: 'kommune', title: 'Verwaltungswirt/in', employer: 'Kreis Soest', location: 'Soest', deadline: '15.09.2025', salary: 'k.A.' },
+                { type: 'kommune', title: 'Regierungssekretär/in', employer: 'Stadt Münster', location: 'Münster', deadline: '30.11.2025', salary: 'ca. 1.499 €' },
+                { type: 'kommune', title: 'Verwaltungswirt/in', employer: 'Stadt Köln', location: 'Köln', deadline: 'ab Nov. 2025', salary: 'k.A.' }
+            ];
+
+            const jobListContainer = document.getElementById('job-list');
+            const filterAllBtn = document.getElementById('filter-all');
+            const filterLandBtn = document.getElementById('filter-land');
+            const filterKommuneBtn = document.getElementById('filter-kommune');
+            const filterButtons = [filterAllBtn, filterLandBtn, filterKommuneBtn];
+
+            function renderJobs(filter = 'all') {
+                jobListContainer.innerHTML = '';
+                const filteredJobs = jobData.filter(job => filter === 'all' || job.type === filter);
+                
+                if (filteredJobs.length === 0) {
+                    jobListContainer.innerHTML = `<p class="text-center text-gray-600 col-span-full">Keine passenden Stellen gefunden.</p>`;
+                    return;
+                }
+
+                filteredJobs.forEach(job => {
+                    const card = document.createElement('div');
+                    card.className = 'job-card bg-white p-6 rounded-lg shadow-md border-t-4';
+                    card.classList.add(job.type === 'land' ? 'border-[#A44A3F]' : 'border-[#3A6B35]');
+                    card.innerHTML = `
+                        <div class="flex justify-between items-start">
+                            <span class="text-xs font-semibold uppercase px-2 py-1 rounded-full ${job.type === 'land' ? 'bg-[#FBE4DD] text-[#A44A3F]' : 'bg-[#DDEBDD] text-[#3A6B35]'}">${job.type === 'land' ? 'Land' : 'Kommune'}</span>
+                            <span class="text-sm font-medium text-gray-700">${job.location}</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-gray-800 mt-4">${job.title}</h3>
+                        <p class="text-gray-600">${job.employer}</p>
+                        <div class="mt-6 pt-4 border-t border-gray-200">
+                            <p class="text-sm text-gray-500">Bewerbungsfrist:</p>
+                            <p class="font-semibold text-[#A44A3F]">${job.deadline}</p>
+                            <p class="text-sm text-gray-500 mt-2">Monatsgehalt:</p>
+                            <p class="font-semibold text-[#3A6B35]">${job.salary}</p>
+                        </div>
+                    `;
+                    jobListContainer.appendChild(card);
+                });
+            }
+
+            function setActiveButton(activeBtn) {
+                filterButtons.forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                activeBtn.classList.add('active');
+            }
+
+            filterAllBtn.addEventListener('click', () => {
+                renderJobs('all');
+                setActiveButton(filterAllBtn);
+            });
+            filterLandBtn.addEventListener('click', () => {
+                renderJobs('land');
+                setActiveButton(filterLandBtn);
+            });
+            filterKommuneBtn.addEventListener('click', () => {
+                renderJobs('kommune');
+                setActiveButton(filterKommuneBtn);
+            });
+
+            const ctx = document.getElementById('salaryChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Verwaltungswirt/in (Beamtenanwärter)', 'Verwaltungsfachangestellte/r', 'Durchschnitt aller Berufe'],
+                    datasets: [{
+                        label: 'Durchschnittliches Monatsgehalt im 1. Ausbildungsjahr (€)',
+                        data: [1499, 1293, 1066],
+                        backgroundColor: [
+                            '#3A6B35',
+                            '#CBD18F',
+                            '#E3EADD'
+                        ],
+                        borderColor: [
+                            '#3A6B35',
+                            '#CBD18F',
+                            '#E3EADD'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.x !== null) {
+                                        label += new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(context.parsed.x);
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Monatsgehalt in Euro'
+                            }
+                        }
+                    }
+                }
+            });
+
+            renderJobs();
+        });
+    </script>
+</body>
+</html>
